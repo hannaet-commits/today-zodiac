@@ -28,6 +28,26 @@ const ZODIACS = [
   { id: "sagittarius", name: "사수자리", emoji: "♐", from: [11, 22], to: [12, 21] },
 ];
 
+const BADGES = ["설렘주의 💗", "매력치 상승 중 ✨", "답장운 들어오는 중 💌", "집중력 상승 중 📚"];
+
+const COLOR_HEX = {
+  "BABY PINK": "#f8b9d0",
+  "BABY BLUE": "#adddf4",
+  LAVENDER: "#cdbaf1",
+  "BUTTER YELLOW": "#f5dc8a",
+  "MINT CREAM": "#bfe5d6",
+  "PEACH GLOW": "#f6b69d",
+  "LILAC MIST": "#d8c5e8",
+  "ROSE QUARTZ": "#e7a9b8",
+  "SKY MILK": "#cbe7f0",
+  "COTTON CANDY": "#efbddd",
+  CHAMPAGNE: "#e8cfaa",
+  "SOFT CORAL": "#ef9c99",
+  "ICE BLUE": "#b9deea",
+  "PEARL WHITE": "#f1edf0",
+  "CHERRY MILK": "#e995ae",
+};
+
 const homeScreen = document.getElementById("home");
 const resultScreen = document.getElementById("result");
 const form = document.getElementById("birthday-form");
@@ -111,33 +131,37 @@ function buildFortune(zodiac) {
   return {
     zodiac,
     score: 62 + (seed % 37),
-    contactStars: 3 + ((seed >> 3) % 3),
-    vibeStars: 3 + ((seed >> 7) % 3),
+    badge: pick(BADGES, seed, 8),
+    affectionStars: 3 + ((seed >>> 11) % 3),
+    contactStars: 3 + ((seed >>> 3) % 3),
+    studyStars: 3 + ((seed >>> 7) % 3),
     quote: pick(fortuneData.oneLiners, seed, 1),
-    love: pick(fortuneData.love, seed, 5),
+    affection: pick(fortuneData.affection, seed, 5),
     contact: pick(fortuneData.contact, seed, 6),
-    social: pick(fortuneData.social, seed, 7),
+    study: pick(fortuneData.study, seed, 7),
     color: pick(fortuneData.colors, seed, 2),
     item: pick(fortuneData.items, seed, 3),
-    action: pick(fortuneData.actions, seed, 4),
   };
 }
 
 function renderCard(fortune) {
-  document.getElementById("card-emoji").textContent = fortune.zodiac.emoji;
+  document.getElementById("card-emoji").textContent = `${fortune.zodiac.emoji}\uFE0E`;
   document.getElementById("card-sign").textContent = fortune.zodiac.name;
   document.getElementById("card-date").textContent = formatToday();
+  document.getElementById("card-badge").textContent = fortune.badge;
   document.getElementById("card-score").textContent = `${fortune.score}°`;
+  document.getElementById("temperature-fill").style.width = `${fortune.score}%`;
+  document.getElementById("card-affection-stars").textContent = stars(fortune.affectionStars);
   document.getElementById("card-contact").textContent = stars(fortune.contactStars);
-  document.getElementById("card-vibe").textContent = stars(fortune.vibeStars);
-  document.getElementById("card-quote").textContent = `“${fortune.quote}”`;
-  document.getElementById("card-love").textContent = fortune.love;
-  document.getElementById("meter-love").title = fortune.love;
-  document.getElementById("meter-contact").title = fortune.contact;
-  document.getElementById("meter-vibe").title = fortune.social;
+  document.getElementById("card-study-stars").textContent = stars(fortune.studyStars);
+  document.getElementById("card-quote").textContent = fortune.quote;
+  document.getElementById("card-affection").textContent = fortune.affection;
+  document.getElementById("card-contact-text").textContent = fortune.contact;
+  document.getElementById("card-study-text").textContent = fortune.study;
   document.getElementById("card-color").textContent = fortune.color;
+  document.getElementById("card-color-chip").style.backgroundColor =
+    COLOR_HEX[fortune.color] || "#f8b9d0";
   document.getElementById("card-item").textContent = fortune.item;
-  document.getElementById("card-pick").textContent = fortune.action;
 }
 
 function showError(message) {
@@ -278,11 +302,10 @@ fetch("./data/fortune.json")
   .catch(() => {
     fortuneData = {
       oneLiners: ["오늘은 네가 생각한 것보다 꽤 매력적인 날."],
-      love: ["먼저 다가가기보다 살짝 여유를 보여주는 게 좋아."],
-      contact: ["늦은 오후에 반가운 연락이 올 가능성이 있어요."],
-      social: ["오늘은 네가 있는 자리가 더 부드러워 보여."],
+      affection: ["오늘은 밀당보다 다정한 한마디가 더 잘 통해. 마음이 가는 사람이 있다면 너무 깊게 해석하지 말고, 네 페이스를 지켜봐."],
+      contact: ["늦은 오후에 반가운 톡이 올 가능성이 있어. 알림 하나에 너무 조급해하지 말고, 대화의 온도만 느껴봐."],
+      study: ["집중이 잘 붙는 날이야. 오래 붙잡기보다 짧은 세션으로 나누면 성적 운이 더 예쁘게 따라올 거야."],
       colors: ["BABY PINK"],
       items: ["립밤"],
-      actions: ["예쁜 사진 하나 남겨보기 📸"],
     };
   });

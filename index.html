@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#f4c6de" />
     <meta name="description" content="생일만 알려주면 귀여운 오늘의 별자리 운세를 알려줄게!" />
+    <meta property="og:title" content="오늘의 별자리 운세 ✨" />
+    <meta property="og:description" content="생일만 알려주면 귀여운 오늘의 운세를 알려줄게!" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
     <title>오늘의 별자리 운세 ✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,12 +30,13 @@
         <p class="subhead">생일만 알려주면 귀여운 오늘의 운세를 알려줄게!</p>
 
         <form id="birthday-form" class="birthday-form" novalidate>
-          <label class="date-label" for="birthday">생년월일</label>
+          <p class="date-label">생년월일</p>
           <div class="date-row">
             <input id="year" name="year" inputmode="numeric" maxlength="4" placeholder="YYYY" autocomplete="bday-year" required />
             <input id="month" name="month" inputmode="numeric" maxlength="2" placeholder="MM" autocomplete="bday-month" required />
             <input id="day" name="day" inputmode="numeric" maxlength="2" placeholder="DD" autocomplete="bday-day" required />
           </div>
+
           <p id="form-error" class="form-error" hidden></p>
           <button type="submit" class="btn btn-primary">내 운세 보기 ✨</button>
         </form>
@@ -41,47 +46,70 @@
 
       <section id="result" class="screen hidden">
         <article id="fortune-card" class="card" aria-live="polite">
-          <p class="card-kicker">✨ TODAY'S ZODIAC</p>
-          <p id="card-emoji" class="card-emoji">♎</p>
-          <h2 id="card-sign" class="card-sign">천칭자리</h2>
-          <p id="card-date" class="card-date">SEPTEMBER 15</p>
-          <p class="card-caption">오늘의 운세</p>
+          <header class="card-header">
+            <p class="card-kicker">✨ TODAY'S ZODIAC</p>
+            <div class="zodiac-identity">
+              <span id="card-emoji" class="zodiac-sticker">♎︎</span>
+              <div>
+                <h2 id="card-sign" class="card-sign">천칭자리</h2>
+                <p id="card-date" class="card-date">SEPTEMBER 15</p>
+              </div>
+            </div>
+          </header>
 
-          <ul class="meters">
-            <li id="meter-love">
-              <span>💗 연애온도</span>
-              <strong id="card-score">87°</strong>
-            </li>
-            <li id="meter-contact">
-              <span>💌 연락운</span>
-              <strong id="card-contact">★★★★☆</strong>
-            </li>
-            <li id="meter-vibe">
-              <span>👀 호감운</span>
-              <strong id="card-vibe">★★★★★</strong>
-            </li>
-          </ul>
+          <section class="hero-fortune">
+            <p id="card-badge" class="result-badge">설렘주의 💗</p>
+            <p class="quote-label">오늘의 핵심 운세</p>
+            <p id="card-quote" class="quote">오늘은 먼저 연락하면 답장이 올 확률 높음 💌</p>
+          </section>
 
-          <div class="quote-block">
-            <p class="quote-label">오늘의 한마디</p>
-            <p id="card-quote" class="quote">“괜히 신경 쓰이는 사람이 생길지도 몰라요.”</p>
-            <p id="card-love" class="love-line">먼저 다가가기보다 살짝 여유를 보여주는 게 좋아.</p>
+          <section class="temperature">
+            <div>
+              <p class="temperature-label">💗 연애온도</p>
+              <p id="card-profile" class="profile-label">오늘의 운세</p>
+            </div>
+            <strong id="card-score" class="temperature-score">87°</strong>
+            <div class="temperature-track" aria-hidden="true">
+              <span id="temperature-fill"></span>
+            </div>
+          </section>
+
+          <div class="fortune-details">
+            <section class="fortune-detail">
+              <div class="detail-heading">
+                <span>💗 애정운</span>
+                <strong id="card-affection-stars">★★★★☆</strong>
+              </div>
+              <p id="card-affection">오늘은 밀당보다 다정한 한마디가 더 잘 통해. 상대의 반응이 조금 느려도 너무 깊게 해석하지 말고, 네 페이스를 지켜봐.</p>
+            </section>
+            <section class="fortune-detail">
+              <div class="detail-heading">
+                <span>💌 연락운</span>
+                <strong id="card-contact">★★★☆☆</strong>
+              </div>
+              <p id="card-contact-text">늦은 오후에 반가운 톡이 올 가능성이 있어. 먼저 보내지 않아도 대화가 열릴 수 있으니, 알림 하나에 너무 조급해하지 마.</p>
+            </section>
+            <section class="fortune-detail">
+              <div class="detail-heading">
+                <span>📚 학업/성적운</span>
+                <strong id="card-study-stars">★★★★☆</strong>
+              </div>
+              <p id="card-study-text">집중이 잘 붙는 날이야. 오래 붙잡기보다 짧은 세션으로 나누면 성적 운이 더 예쁘게 따라올 거야.</p>
+            </section>
           </div>
 
           <div class="lucky-row">
-            <div>
+            <div class="lucky-box">
               <p class="lucky-label">🍀 LUCKY COLOR</p>
-              <p id="card-color" class="lucky-value">BABY BLUE</p>
+              <p class="lucky-value">
+                <span id="card-color-chip" class="color-chip" aria-hidden="true"></span>
+                <span id="card-color">BABY BLUE</span>
+              </p>
             </div>
-            <div>
+            <div class="lucky-box">
               <p class="lucky-label">🎀 LUCKY ITEM</p>
               <p id="card-item" class="lucky-value">립밤</p>
             </div>
-          </div>
-
-          <div class="pick">
-            <p class="lucky-label">🫧 TODAY'S PICK</p>
-            <p id="card-pick" class="pick-value">스토리에 예쁜 사진 올리기</p>
           </div>
 
           <p class="watermark">today-zodiac</p>

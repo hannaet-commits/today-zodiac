@@ -30,6 +30,7 @@ body {
 body {
   font-family: var(--font-sans);
   color: var(--ink);
+  overflow-x: hidden;
   background:
     radial-gradient(1200px 800px at 10% -10%, #ffe1ef 0%, transparent 55%),
     radial-gradient(900px 700px at 110% 10%, #d8efff 0%, transparent 50%),
@@ -76,7 +77,8 @@ body {
 .app {
   position: relative;
   z-index: 1;
-  width: min(430px, 100%);
+  width: 100%;
+  max-width: 390px;
   margin: 0 auto;
   padding: 28px 20px 40px;
 }
@@ -105,6 +107,9 @@ body {
 .subhead,
 .hint,
 .disclaimer {
+  max-width: 340px;
+  margin-right: auto;
+  margin-left: auto;
   text-align: center;
   color: var(--muted);
   font-size: 14px;
@@ -112,8 +117,8 @@ body {
 }
 
 .birthday-form {
-  margin-top: 28px;
-  padding: 22px 18px 20px;
+  margin-top: 24px;
+  padding: 20px 18px;
   background: rgba(255, 250, 253, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: var(--radius);
@@ -129,11 +134,12 @@ body {
 
 .date-row {
   display: grid;
-  grid-template-columns: 1.3fr 0.9fr 0.9fr;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.9fr) minmax(0, 0.9fr);
   gap: 8px;
 }
 
 .date-row input {
+  min-width: 0;
   width: 100%;
   min-height: 52px;
   padding: 0 12px;
@@ -170,6 +176,13 @@ body {
   cursor: pointer;
 }
 
+.btn-primary {
+  margin-top: 18px;
+  color: #fff;
+  background: linear-gradient(135deg, #ec739f 0%, #9a7be8 100%);
+  box-shadow: 0 10px 24px rgba(202, 98, 151, 0.32);
+}
+
 .btn-primary:active {
   transform: translateY(1px);
 }
@@ -196,16 +209,15 @@ input {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 640px;
-  padding: 28px 22px 22px;
+  min-height: 720px;
+  padding: 22px 20px 18px;
   background:
-    radial-gradient(circle at 88% 8%, rgba(185, 227, 247, 0.55), transparent 28%),
-    radial-gradient(circle at 12% 92%, rgba(255, 183, 204, 0.5), transparent 30%),
-    linear-gradient(180deg, #fffdfb 0%, #fff4f8 42%, #f3e9ff 100%);
+    radial-gradient(circle at 94% 5%, rgba(185, 227, 247, 0.78), transparent 28%),
+    radial-gradient(circle at 4% 92%, rgba(255, 183, 204, 0.62), transparent 30%),
+    linear-gradient(180deg, #fffdfc 0%, #fff1f7 48%, #eee7ff 100%);
   border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 32px;
   box-shadow: var(--shadow);
-  aspect-ratio: 9 / 16;
 }
 
 .card-kicker,
@@ -220,121 +232,223 @@ input {
 
 .card-kicker {
   margin: 0;
-  text-align: center;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--pink-deep);
 }
 
-.card-emoji {
-  margin: 18px 0 0;
-  text-align: center;
-  font-size: 42px;
+.card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.zodiac-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  width: 100%;
+}
+
+.zodiac-sticker {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  transform: rotate(-4deg);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(145deg, #f484af, #9272dc);
+  box-shadow: 0 7px 14px rgba(133, 93, 191, 0.25);
+  font-family: "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .card-sign {
-  margin: 4px 0 0;
-  text-align: center;
-  font-family: var(--font-serif);
-  font-size: 36px;
-  font-weight: 600;
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
 }
 
 .card-date {
-  margin: 10px 0 0;
-  text-align: center;
-  font-size: 12px;
+  margin: 3px 0 0;
+  font-size: 9px;
   color: var(--muted);
 }
 
-.card-caption {
-  margin: 6px 0 0;
+.hero-fortune {
+  margin-top: 16px;
+  padding: 0 4px;
   text-align: center;
-  font-size: 11px;
-  color: #b089b5;
 }
 
-.meters {
-  list-style: none;
-  margin: 22px 0 0;
-  padding: 14px 16px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.55);
-}
-
-.meters li {
-  display: flex;
-  justify-content: space-between;
+.result-badge {
+  display: inline-flex;
+  min-height: 27px;
+  margin: 0 0 10px;
+  padding: 5px 11px;
   align-items: center;
-  padding: 8px 0;
-  font-size: 14px;
-}
-
-.meters li + li {
-  border-top: 1px solid rgba(238, 122, 163, 0.14);
-}
-
-.meters strong {
-  font-family: var(--font-en);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
-.quote-block {
-  margin-top: 22px;
-  text-align: center;
-  flex: 1;
+  border-radius: 999px;
+  color: #c83f73;
+  background: #ffe0eb;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .quote-label {
-  margin: 0 0 8px;
-  font-size: 12px;
+  margin: 0 0 6px;
   color: var(--muted);
+  font-size: 11px;
 }
 
 .quote {
+  max-width: 100%;
   margin: 0;
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-style: italic;
-  line-height: 1.45;
+  padding: 0 2px;
+  color: #38263e;
+  font-family: var(--font-sans);
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.035em;
+  overflow-wrap: break-word;
 }
 
-.love-line {
-  margin: 10px 0 0;
-  color: var(--muted);
+.temperature {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  padding: 14px 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.temperature-label {
+  margin: 0;
+  color: #56405d;
   font-size: 13px;
+  font-weight: 700;
+}
+
+.profile-label {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.temperature-score {
+  color: #d94d82;
+  font-family: var(--font-en);
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.temperature-track {
+  position: absolute;
+  right: 16px;
+  bottom: 8px;
+  left: 16px;
+  overflow: hidden;
+  height: 4px;
+  border-radius: 999px;
+  background: #f2dfeb;
+}
+
+.temperature-track span {
+  display: block;
+  width: 87%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f28db1, #a985e9);
+}
+
+.fortune-details {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.fortune-detail {
+  padding: 10px 13px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.detail-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.detail-heading strong {
+  color: #c3608b;
+  font-family: var(--font-en);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.fortune-detail p {
+  margin: 6px 0 0;
+  color: #654f6a;
+  font-size: 12px;
   line-height: 1.55;
 }
 
 .lucky-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.lucky-box {
+  padding: 11px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.48);
 }
 
 .lucky-label {
   margin: 0;
-  font-size: 10px;
+  font-size: 8px;
   color: #b089b5;
 }
 
-.lucky-value,
-.pick-value {
-  margin: 6px 0 0;
-  font-size: 15px;
-  font-weight: 600;
+.lucky-value {
+  margin: 5px 0 0;
+  color: #4d3853;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.pick {
-  margin-top: 18px;
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.62);
+.lucky-value {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.color-chip {
+  flex: 0 0 auto;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  background: #b9e3f7;
+  box-shadow: 0 1px 5px rgba(72, 44, 76, 0.2);
 }
 
 .watermark {
-  margin: 20px 0 0;
+  margin: auto 0 0;
+  padding-top: 10px;
   text-align: center;
   font-size: 10px;
   color: rgba(74, 53, 80, 0.35);
@@ -363,14 +477,15 @@ input {
 
 @media (max-width: 380px) {
   .card {
-    padding: 22px 16px 16px;
-  }
-
-  .card-sign {
-    font-size: 30px;
+    min-height: 680px;
+    padding: 18px 15px 14px;
   }
 
   .quote {
-    font-size: 19px;
+    font-size: 20px;
+  }
+
+  .fortune-detail {
+    padding-block: 8px;
   }
 }
