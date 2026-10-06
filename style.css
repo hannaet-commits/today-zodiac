@@ -104,6 +104,52 @@ body {
   line-height: 1.35;
 }
 
+.sexy-heart {
+  display: inline-block;
+  position: relative;
+  width: 18px;
+  height: 16px;
+  margin-left: 4px;
+  vertical-align: 4px;
+  transform: rotate(-14deg) scale(1.15);
+}
+
+.sexy-heart::before,
+.sexy-heart::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 16px;
+  border-radius: 10px 10px 4px 4px;
+  background: linear-gradient(160deg, #ff6b95 0%, #d4145a 78%);
+  box-shadow: 0 2px 6px rgba(212, 20, 90, 0.35);
+}
+
+.sexy-heart::before {
+  left: 8px;
+  transform: rotate(48deg);
+  transform-origin: 0 8px;
+}
+
+.sexy-heart::after {
+  left: 0;
+  transform: rotate(-48deg);
+  transform-origin: 10px 8px;
+}
+
+.back-btn {
+  display: inline-flex;
+  margin: 0 0 12px;
+  padding: 8px 2px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .subhead,
 .hint,
 .disclaimer {
@@ -209,7 +255,7 @@ input {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 720px;
+  min-height: 0;
   padding: 22px 20px 18px;
   background:
     radial-gradient(circle at 94% 5%, rgba(185, 227, 247, 0.78), transparent 28%),
@@ -236,6 +282,106 @@ input {
   color: var(--pink-deep);
 }
 
+.block-kicker {
+  margin: 0;
+  font-family: var(--font-en);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pink-deep);
+}
+
+.block-title {
+  margin: 6px 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.fortune-details + .temperature {
+  margin-top: 10px;
+}
+
+.compat-headline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: #c43b6e;
+}
+
+.date-label-gap {
+  margin-top: 18px;
+}
+
+.compat-gate {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 22px 18px 20px;
+  border: 0;
+  border-radius: 26px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 214, 230, 0.45), transparent 36%),
+    linear-gradient(135deg, #5a1633 0%, #c43b6e 48%, #8b2d6b 100%);
+  box-shadow: 0 16px 34px rgba(140, 36, 78, 0.35);
+  text-align: left;
+  cursor: pointer;
+}
+
+.compat-gate-en {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 12px;
+  font-style: italic;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  opacity: 0.78;
+}
+
+.compat-gate-title {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.compat-gate-sub {
+  display: block;
+  margin-top: 8px;
+  color: #ffd6e6;
+  font-size: 13px;
+}
+
+.compat-pair {
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.tarot-frame {
+  margin: 16px auto 0;
+  width: min(230px, 78%);
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 12px 24px rgba(90, 22, 51, 0.16);
+}
+
+.tarot-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.tarot-reading {
+  margin-top: 14px;
+}
+
 .card-header {
   display: flex;
   flex-direction: column;
@@ -245,39 +391,39 @@ input {
 
 .zodiac-identity {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   min-width: 0;
   width: 100%;
+  margin-top: 8px;
 }
 
 .zodiac-sticker {
+  flex: 0 0 auto;
   display: grid;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   place-items: center;
   transform: rotate(-4deg);
   border: 2px solid rgba(255, 255, 255, 0.95);
-  border-radius: 14px;
+  border-radius: 12px;
   color: #fff;
   background: linear-gradient(145deg, #f484af, #9272dc);
-  box-shadow: 0 7px 14px rgba(133, 93, 191, 0.25);
+  box-shadow: 0 5px 10px rgba(133, 93, 191, 0.22);
   font-family: "Times New Roman", serif;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   line-height: 1;
 }
 
 .card-sign {
   margin: 0;
-  font-size: 19px;
+  font-size: 14px;
   font-weight: 700;
 }
 
-.card-date {
-  margin: 3px 0 0;
-  font-size: 9px;
-  color: var(--muted);
+.zodiac-identity p {
+  margin: 4px 0 0;
 }
 
 .hero-fortune {
@@ -477,7 +623,6 @@ input {
 
 @media (max-width: 380px) {
   .card {
-    min-height: 680px;
     padding: 18px 15px 14px;
   }
 

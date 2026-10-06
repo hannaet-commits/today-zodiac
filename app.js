@@ -1,62 +1,36 @@
-const MONTHS = [
-  "JANUARY",
-  "FEBRUARY",
-  "MARCH",
-  "APRIL",
-  "MAY",
-  "JUNE",
-  "JULY",
-  "AUGUST",
-  "SEPTEMBER",
-  "OCTOBER",
-  "NOVEMBER",
-  "DECEMBER",
-];
-
 const ZODIACS = [
-  { id: "capricorn", name: "염소자리", emoji: "♑", from: [12, 22], to: [1, 19] },
-  { id: "aquarius", name: "물병자리", emoji: "♒", from: [1, 20], to: [2, 18] },
-  { id: "pisces", name: "물고기자리", emoji: "♓", from: [2, 19], to: [3, 20] },
-  { id: "aries", name: "양자리", emoji: "♈", from: [3, 21], to: [4, 19] },
-  { id: "taurus", name: "황소자리", emoji: "♉", from: [4, 20], to: [5, 20] },
-  { id: "gemini", name: "쌍둥이자리", emoji: "♊", from: [5, 21], to: [6, 20] },
-  { id: "cancer", name: "게자리", emoji: "♋", from: [6, 21], to: [7, 22] },
-  { id: "leo", name: "사자자리", emoji: "♌", from: [7, 23], to: [8, 22] },
-  { id: "virgo", name: "처녀자리", emoji: "♍", from: [8, 23], to: [9, 22] },
-  { id: "libra", name: "천칭자리", emoji: "♎", from: [9, 23], to: [10, 22] },
-  { id: "scorpio", name: "전갈자리", emoji: "♏", from: [10, 23], to: [11, 21] },
-  { id: "sagittarius", name: "사수자리", emoji: "♐", from: [11, 22], to: [12, 21] },
+  { id: "capricorn", name: "염소자리", emoji: "♑", range: "12.22 – 1.19", from: [12, 22], to: [1, 19] },
+  { id: "aquarius", name: "물병자리", emoji: "♒", range: "1.20 – 2.18", from: [1, 20], to: [2, 18] },
+  { id: "pisces", name: "물고기자리", emoji: "♓", range: "2.19 – 3.20", from: [2, 19], to: [3, 20] },
+  { id: "aries", name: "양자리", emoji: "♈", range: "3.21 – 4.19", from: [3, 21], to: [4, 19] },
+  { id: "taurus", name: "황소자리", emoji: "♉", range: "4.20 – 5.20", from: [4, 20], to: [5, 20] },
+  { id: "gemini", name: "쌍둥이자리", emoji: "♊", range: "5.21 – 6.20", from: [5, 21], to: [6, 20] },
+  { id: "cancer", name: "게자리", emoji: "♋", range: "6.21 – 7.22", from: [6, 21], to: [7, 22] },
+  { id: "leo", name: "사자자리", emoji: "♌", range: "7.23 – 8.22", from: [7, 23], to: [8, 22] },
+  { id: "virgo", name: "처녀자리", emoji: "♍", range: "8.23 – 9.22", from: [8, 23], to: [9, 22] },
+  { id: "libra", name: "천칭자리", emoji: "♎", range: "9.23 – 10.22", from: [9, 23], to: [10, 22] },
+  { id: "scorpio", name: "전갈자리", emoji: "♏", range: "10.23 – 11.21", from: [10, 23], to: [11, 21] },
+  { id: "sagittarius", name: "사수자리", emoji: "♐", range: "11.22 – 12.21", from: [11, 22], to: [12, 21] },
 ];
 
-const BADGES = ["설렘주의 💗", "매력치 상승 중 ✨", "답장운 들어오는 중 💌", "집중력 상승 중 📚"];
+const SCREENS = ["home", "result", "compat-home", "compat-result"];
 
-const COLOR_HEX = {
-  "BABY PINK": "#f8b9d0",
-  "BABY BLUE": "#adddf4",
-  LAVENDER: "#cdbaf1",
-  "BUTTER YELLOW": "#f5dc8a",
-  "MINT CREAM": "#bfe5d6",
-  "PEACH GLOW": "#f6b69d",
-  "LILAC MIST": "#d8c5e8",
-  "ROSE QUARTZ": "#e7a9b8",
-  "SKY MILK": "#cbe7f0",
-  "COTTON CANDY": "#efbddd",
-  CHAMPAGNE: "#e8cfaa",
-  "SOFT CORAL": "#ef9c99",
-  "ICE BLUE": "#b9deea",
-  "PEARL WHITE": "#f1edf0",
-  "CHERRY MILK": "#e995ae",
-};
-
-const homeScreen = document.getElementById("home");
-const resultScreen = document.getElementById("result");
 const form = document.getElementById("birthday-form");
 const formError = document.getElementById("form-error");
 const yearInput = document.getElementById("year");
 const monthInput = document.getElementById("month");
 const dayInput = document.getElementById("day");
+const compatError = document.getElementById("compat-error");
 
 let fortuneData = null;
+let lastBirthday = null;
+
+function showScreen(id) {
+  SCREENS.forEach((screenId) => {
+    document.getElementById(screenId).classList.toggle("hidden", screenId !== id);
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
 function inRange(month, day, from, to) {
   const value = month * 100 + day;
@@ -94,15 +68,10 @@ function todayKey() {
   return `${now.getFullYear()}-${month}-${day}`;
 }
 
-function formatToday() {
-  const now = new Date();
-  return `${MONTHS[now.getMonth()]} ${now.getDate()}`;
-}
-
-function parseBirthday() {
-  const year = Number(yearInput.value.trim());
-  const month = Number(monthInput.value.trim());
-  const day = Number(dayInput.value.trim());
+function parseBirthdayFrom(yearEl, monthEl, dayEl) {
+  const year = Number(yearEl.value.trim());
+  const month = Number(monthEl.value.trim());
+  const day = Number(dayEl.value.trim());
   const currentYear = new Date().getFullYear();
 
   if (!year || !month || !day) {
@@ -126,82 +95,91 @@ function parseBirthday() {
   return { year, month, day };
 }
 
+function fillBirthday(yearEl, monthEl, dayEl, birthday) {
+  if (!birthday) return;
+  yearEl.value = birthday.year;
+  monthEl.value = String(birthday.month).padStart(2, "0");
+  dayEl.value = String(birthday.day).padStart(2, "0");
+}
+
 function buildFortune(zodiac) {
   const seed = hashString(`${todayKey()}-${zodiac.id}`);
   return {
     zodiac,
     score: 62 + (seed % 37),
-    badge: pick(BADGES, seed, 8),
     affectionStars: 3 + ((seed >>> 11) % 3),
     contactStars: 3 + ((seed >>> 3) % 3),
-    studyStars: 3 + ((seed >>> 7) % 3),
     quote: pick(fortuneData.oneLiners, seed, 1),
     affection: pick(fortuneData.affection, seed, 5),
-    contact: pick(fortuneData.contact, seed, 6),
-    study: pick(fortuneData.study, seed, 7),
-    color: pick(fortuneData.colors, seed, 2),
-    item: pick(fortuneData.items, seed, 3),
+    contact: pick(fortuneData.contact, seed, 7),
+    zodiacLove: fortuneData.zodiacLove[zodiac.id],
   };
 }
 
 function renderCard(fortune) {
   document.getElementById("card-emoji").textContent = `${fortune.zodiac.emoji}\uFE0E`;
   document.getElementById("card-sign").textContent = fortune.zodiac.name;
-  document.getElementById("card-date").textContent = formatToday();
-  document.getElementById("card-badge").textContent = fortune.badge;
+  document.getElementById("card-range").textContent = fortune.zodiac.range;
   document.getElementById("card-score").textContent = `${fortune.score}°`;
   document.getElementById("temperature-fill").style.width = `${fortune.score}%`;
   document.getElementById("card-affection-stars").textContent = stars(fortune.affectionStars);
   document.getElementById("card-contact").textContent = stars(fortune.contactStars);
-  document.getElementById("card-study-stars").textContent = stars(fortune.studyStars);
   document.getElementById("card-quote").textContent = fortune.quote;
   document.getElementById("card-affection").textContent = fortune.affection;
   document.getElementById("card-contact-text").textContent = fortune.contact;
-  document.getElementById("card-study-text").textContent = fortune.study;
-  document.getElementById("card-color").textContent = fortune.color;
-  document.getElementById("card-color-chip").style.backgroundColor =
-    COLOR_HEX[fortune.color] || "#f8b9d0";
-  document.getElementById("card-item").textContent = fortune.item;
+  document.getElementById("card-zodiac-love").textContent = fortune.zodiacLove;
 }
 
-function showError(message) {
-  formError.hidden = false;
-  formError.textContent = message;
+function buildCompat(meZodiac, youZodiac) {
+  const seed = hashString(`${todayKey()}-${meZodiac.id}-${youZodiac.id}`);
+  const card = pick(fortuneData.tarot, seed, 3);
+  return {
+    meZodiac,
+    youZodiac,
+    card,
+    score: 58 + (seed % 41),
+  };
 }
 
-function clearError() {
-  formError.hidden = true;
-  formError.textContent = "";
+function renderCompat(compat) {
+  document.getElementById("compat-pair").textContent =
+    `${compat.meZodiac.emoji} ${compat.meZodiac.name}  ×  ${compat.youZodiac.emoji} ${compat.youZodiac.name}`;
+  document.getElementById("compat-verdict").textContent = compat.card.verdict;
+  document.getElementById("compat-score").textContent = `${compat.score}°`;
+  document.getElementById("compat-fill").style.width = `${compat.score}%`;
+  const art = document.getElementById("tarot-art");
+  art.src = `./images/tarot/tarot-${compat.card.id}.jpg`;
+  art.alt = compat.card.en;
+  document.getElementById("tarot-line-1").textContent = compat.card.lines[0];
+  document.getElementById("tarot-line-2").textContent = compat.card.lines[1];
+  document.getElementById("tarot-line-3").textContent = compat.card.lines[2];
 }
 
-function showResult() {
-  homeScreen.classList.add("hidden");
-  resultScreen.classList.remove("hidden");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+function showError(node, message) {
+  node.hidden = false;
+  node.textContent = message;
 }
 
-function showHome() {
-  resultScreen.classList.add("hidden");
-  homeScreen.classList.remove("hidden");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+function clearError(node) {
+  node.hidden = true;
+  node.textContent = "";
 }
 
-async function captureCard() {
-  const card = document.getElementById("fortune-card");
-  return html2canvas(card, {
+async function captureElement(id) {
+  return html2canvas(document.getElementById(id), {
     backgroundColor: null,
     scale: 2,
     useCORS: true,
   });
 }
 
-async function saveCard() {
+async function saveElement(id, filename) {
   if (typeof html2canvas !== "function") {
     alert("이미지 저장 기능을 아직 불러오지 못했어. 잠시 후 다시 눌러줘!");
     return;
   }
 
-  const canvas = await captureCard();
+  const canvas = await captureElement(id);
   const dataUrl = canvas.toDataURL("image/png");
   const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
@@ -216,18 +194,18 @@ async function saveCard() {
   }
 
   const link = document.createElement("a");
-  link.download = "today-zodiac.png";
+  link.download = filename;
   link.href = dataUrl;
   link.click();
 }
 
-async function shareCard() {
-  const canvas = await captureCard();
+async function shareElement(id, filename) {
+  const canvas = await captureElement(id);
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-  const file = new File([blob], "today-zodiac.png", { type: "image/png" });
+  const file = new File([blob], filename, { type: "image/png" });
   const payload = {
-    title: "오늘의 별자리 운세 ✨",
-    text: "오늘 나의 운세는 어떨까? 💗",
+    title: "오늘의 사랑 운세 💗",
+    text: "오늘 내 사랑운은 어떨까?",
     files: [file],
   };
 
@@ -237,8 +215,8 @@ async function shareCard() {
   }
   if (navigator.share) {
     await navigator.share({
-      title: "오늘의 별자리 운세 ✨",
-      text: "오늘 나의 운세는 어떨까? 💗",
+      title: "오늘의 사랑 운세 💗",
+      text: "오늘 내 사랑운은 어떨까?",
     });
     return;
   }
@@ -248,51 +226,126 @@ async function shareCard() {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  clearError();
+  clearError(formError);
 
   if (!fortuneData) {
-    showError("운세 데이터를 아직 못 불러왔어. 잠시 후 다시 눌러줘!");
+    showError(formError, "운세 데이터를 아직 못 불러왔어. 잠시 후 다시 눌러줘!");
     return;
   }
 
-  const birthday = parseBirthday();
+  const birthday = parseBirthdayFrom(yearInput, monthInput, dayInput);
   if (birthday.error) {
-    showError(birthday.error);
+    showError(formError, birthday.error);
     return;
   }
 
-  const zodiac = getZodiac(birthday.month, birthday.day);
-  renderCard(buildFortune(zodiac));
-  showResult();
+  lastBirthday = birthday;
+  renderCard(buildFortune(getZodiac(birthday.month, birthday.day)));
+  showScreen("result");
 });
 
-document.getElementById("retry-btn").addEventListener("click", showHome);
+document.getElementById("result-back-btn").addEventListener("click", () => showScreen("home"));
+document.getElementById("retry-btn").addEventListener("click", () => showScreen("home"));
+
+document.getElementById("compat-open-btn").addEventListener("click", () => {
+  fillBirthday(
+    document.getElementById("me-year"),
+    document.getElementById("me-month"),
+    document.getElementById("me-day"),
+    lastBirthday
+  );
+  clearError(compatError);
+  showScreen("compat-home");
+});
+
+document.getElementById("compat-back-btn").addEventListener("click", () => showScreen("result"));
+document.getElementById("compat-result-back-btn").addEventListener("click", () => showScreen("compat-home"));
+document.getElementById("compat-again-btn").addEventListener("click", () => showScreen("compat-home"));
+
+document.getElementById("compat-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  clearError(compatError);
+
+  if (!fortuneData) {
+    showError(compatError, "운세 데이터를 아직 못 불러왔어. 잠시 후 다시 눌러줘!");
+    return;
+  }
+
+  const me = parseBirthdayFrom(
+    document.getElementById("me-year"),
+    document.getElementById("me-month"),
+    document.getElementById("me-day")
+  );
+  if (me.error) {
+    showError(compatError, `나는: ${me.error}`);
+    return;
+  }
+
+  const you = parseBirthdayFrom(
+    document.getElementById("you-year"),
+    document.getElementById("you-month"),
+    document.getElementById("you-day")
+  );
+  if (you.error) {
+    showError(compatError, `너는: ${you.error}`);
+    return;
+  }
+
+  lastBirthday = me;
+  renderCompat(buildCompat(getZodiac(me.month, me.day), getZodiac(you.month, you.day)));
+  showScreen("compat-result");
+});
+
 document.getElementById("save-btn").addEventListener("click", async () => {
   try {
-    await saveCard();
+    await saveElement("fortune-card", "today-love.png");
   } catch (error) {
     alert("이미지 저장에 실패했어. 다시 한번 눌러줘!");
   }
 });
+
 document.getElementById("share-btn").addEventListener("click", async () => {
   try {
-    await shareCard();
+    await shareElement("fortune-card", "today-love.png");
   } catch (error) {
     if (error && error.name === "AbortError") return;
     alert("이 브라우저에서는 공유가 안 돼서, 결과 저장하기를 눌러줘!");
   }
 });
 
-["year", "month", "day"].forEach((id, index) => {
-  const input = document.getElementById(id);
-  input.addEventListener("input", () => {
-    input.value = input.value.replace(/\D/g, "");
-    const limit = id === "year" ? 4 : 2;
-    if (input.value.length >= limit && index < 2) {
-      document.getElementById(["year", "month", "day"][index + 1]).focus();
-    }
-  });
+document.getElementById("compat-save-btn").addEventListener("click", async () => {
+  try {
+    await saveElement("compat-card", "our-chemistry.png");
+  } catch (error) {
+    alert("이미지 저장에 실패했어. 다시 한번 눌러줘!");
+  }
 });
+
+document.getElementById("compat-share-btn").addEventListener("click", async () => {
+  try {
+    await shareElement("compat-card", "our-chemistry.png");
+  } catch (error) {
+    if (error && error.name === "AbortError") return;
+    alert("이 브라우저에서는 공유가 안 돼서, 결과 저장하기를 눌러줘!");
+  }
+});
+
+function bindDateInputs(ids) {
+  ids.forEach((id, index) => {
+    const input = document.getElementById(id);
+    input.addEventListener("input", () => {
+      input.value = input.value.replace(/\D/g, "");
+      const limit = id.includes("year") ? 4 : 2;
+      if (input.value.length >= limit && index < ids.length - 1) {
+        document.getElementById(ids[index + 1]).focus();
+      }
+    });
+  });
+}
+
+bindDateInputs(["year", "month", "day"]);
+bindDateInputs(["me-year", "me-month", "me-day"]);
+bindDateInputs(["you-year", "you-month", "you-day"]);
 
 fetch("./data/fortune.json")
   .then((response) => response.json())
@@ -301,11 +354,19 @@ fetch("./data/fortune.json")
   })
   .catch(() => {
     fortuneData = {
-      oneLiners: ["오늘은 네가 생각한 것보다 꽤 매력적인 날."],
-      affection: ["오늘은 밀당보다 다정한 한마디가 더 잘 통해. 마음이 가는 사람이 있다면 너무 깊게 해석하지 말고, 네 페이스를 지켜봐."],
-      contact: ["늦은 오후에 반가운 톡이 올 가능성이 있어. 알림 하나에 너무 조급해하지 말고, 대화의 온도만 느껴봐."],
-      study: ["집중이 잘 붙는 날이야. 오래 붙잡기보다 짧은 세션으로 나누면 성적 운이 더 예쁘게 따라올 거야."],
-      colors: ["BABY PINK"],
-      items: ["립밤"],
+      oneLiners: ["오늘은 그 애 생각이 더 선명해지는 날."],
+      affection: ["마음이 가는 사람이 있다면 너무 깊게 해석하지 말고, 네 페이스를 지켜봐. 썸이든 연애든 오늘은 작은 신호가 더 선명해."],
+      contact: ["늦은 오후에 그 애 톡이 올 가능성이 있어."],
+      zodiacLove: Object.fromEntries(ZODIACS.map((zodiac) => [zodiac.id, "오늘은 네 별자리가 유난히 로맨틱해."])),
+      tarot: [
+        {
+          id: "lovers",
+          en: "LOVERS",
+          name: "연인",
+          symbol: "♡",
+          verdict: "궁합 달아, 잘 맞음",
+          lines: ["둘의 마음은 이미 같은 쪽으로 기울어 있어.", "손끝이 스치면 공기가 뜨거워질 수 있어.", "헤어질 운은 낮아."],
+        },
+      ],
     };
   });

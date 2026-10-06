@@ -4,16 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#f4c6de" />
-    <meta name="description" content="생일만 알려주면 귀여운 오늘의 별자리 운세를 알려줄게!" />
-    <meta property="og:title" content="오늘의 별자리 운세 ✨" />
-    <meta property="og:description" content="생일만 알려주면 귀여운 오늘의 운세를 알려줄게!" />
+    <meta name="description" content="생일만 알려주면 오늘의 사랑 운세를 알려줄게 💗" />
+    <meta property="og:title" content="오늘의 사랑 운세 ✨" />
+    <meta property="og:description" content="별자리로 보는 오늘의 연애, 썸, 그리고 너와의 궁합." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
-    <title>오늘의 별자리 운세 ✨</title>
+    <title>오늘의 사랑 운세 ✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Noto+Sans+KR:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&family=Noto+Sans+KR:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./style.css" />
@@ -25,100 +25,168 @@
 
     <main class="app">
       <section id="home" class="screen">
-        <p class="brand">✨ 오늘의 별자리 운세</p>
-        <h1 class="headline">오늘 나의 운세는<br />어떨까? 💗</h1>
-        <p class="subhead">생일만 알려주면 귀여운 오늘의 운세를 알려줄게!</p>
+        <p class="brand">💗 오늘의 사랑 운세</p>
+        <h1 class="headline">오늘 내 사랑운은<br />어떨까? <span class="sexy-heart" aria-hidden="true"></span></h1>
+        <p class="subhead">생일만 알려주면 오늘의 연애·썸 운세를 알려줄게.</p>
 
         <form id="birthday-form" class="birthday-form" novalidate>
-          <p class="date-label">생년월일</p>
+          <p class="date-label">내 생년월일</p>
           <div class="date-row">
             <input id="year" name="year" inputmode="numeric" maxlength="4" placeholder="YYYY" autocomplete="bday-year" required />
             <input id="month" name="month" inputmode="numeric" maxlength="2" placeholder="MM" autocomplete="bday-month" required />
             <input id="day" name="day" inputmode="numeric" maxlength="2" placeholder="DD" autocomplete="bday-day" required />
           </div>
-
           <p id="form-error" class="form-error" hidden></p>
-          <button type="submit" class="btn btn-primary">내 운세 보기 ✨</button>
+          <button type="submit" class="btn btn-primary">내 사랑운 보기 ✨</button>
         </form>
-
         <p class="hint">재미로 가볍게 봐주세요 🫧</p>
       </section>
 
       <section id="result" class="screen hidden">
+        <button id="result-back-btn" type="button" class="back-btn">← 처음으로</button>
         <article id="fortune-card" class="card" aria-live="polite">
-          <header class="card-header">
-            <p class="card-kicker">✨ TODAY'S ZODIAC</p>
-            <div class="zodiac-identity">
-              <span id="card-emoji" class="zodiac-sticker">♎︎</span>
+          <section class="love-block">
+            <p class="block-kicker">TODAY'S LOVE</p>
+            <h2 class="block-title">오늘의 사랑 운세</h2>
+            <p id="card-quote" class="quote">오늘은 그 애 생각이 더 선명해지는 날.</p>
+
+            <div class="fortune-details">
+              <section class="fortune-detail">
+                <div class="detail-heading">
+                  <span>✨ 오늘의 별자리</span>
+                  <strong id="card-range">9.23 – 10.22</strong>
+                </div>
+                <div class="zodiac-identity">
+                  <span id="card-emoji" class="zodiac-sticker">♎︎</span>
+                  <div>
+                    <h3 id="card-sign" class="card-sign">천칭자리</h3>
+                    <p id="card-zodiac-love"></p>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div class="temperature">
               <div>
-                <h2 id="card-sign" class="card-sign">천칭자리</h2>
-                <p id="card-date" class="card-date">SEPTEMBER 15</p>
+                <p class="temperature-label">💗 연애온도</p>
+                <p class="profile-label">썸부터 연애까지, 오늘의 온도</p>
+              </div>
+              <strong id="card-score" class="temperature-score">87°</strong>
+              <div class="temperature-track" aria-hidden="true">
+                <span id="temperature-fill"></span>
               </div>
             </div>
-          </header>
 
-          <section class="hero-fortune">
-            <p id="card-badge" class="result-badge">설렘주의 💗</p>
-            <p class="quote-label">오늘의 핵심 운세</p>
-            <p id="card-quote" class="quote">오늘은 먼저 연락하면 답장이 올 확률 높음 💌</p>
+            <div class="fortune-details">
+              <section class="fortune-detail">
+                <div class="detail-heading">
+                  <span>💗 애정운</span>
+                  <strong id="card-affection-stars">★★★★☆</strong>
+                </div>
+                <p id="card-affection"></p>
+              </section>
+              <section class="fortune-detail">
+                <div class="detail-heading">
+                  <span>💌 연락운</span>
+                  <strong id="card-contact">★★★☆☆</strong>
+                </div>
+                <p id="card-contact-text"></p>
+              </section>
+            </div>
           </section>
-
-          <section class="temperature">
-            <div>
-              <p class="temperature-label">💗 연애온도</p>
-              <p id="card-profile" class="profile-label">오늘의 운세</p>
-            </div>
-            <strong id="card-score" class="temperature-score">87°</strong>
-            <div class="temperature-track" aria-hidden="true">
-              <span id="temperature-fill"></span>
-            </div>
-          </section>
-
-          <div class="fortune-details">
-            <section class="fortune-detail">
-              <div class="detail-heading">
-                <span>💗 애정운</span>
-                <strong id="card-affection-stars">★★★★☆</strong>
-              </div>
-              <p id="card-affection">오늘은 밀당보다 다정한 한마디가 더 잘 통해. 상대의 반응이 조금 느려도 너무 깊게 해석하지 말고, 네 페이스를 지켜봐.</p>
-            </section>
-            <section class="fortune-detail">
-              <div class="detail-heading">
-                <span>💌 연락운</span>
-                <strong id="card-contact">★★★☆☆</strong>
-              </div>
-              <p id="card-contact-text">늦은 오후에 반가운 톡이 올 가능성이 있어. 먼저 보내지 않아도 대화가 열릴 수 있으니, 알림 하나에 너무 조급해하지 마.</p>
-            </section>
-            <section class="fortune-detail">
-              <div class="detail-heading">
-                <span>📚 학업/성적운</span>
-                <strong id="card-study-stars">★★★★☆</strong>
-              </div>
-              <p id="card-study-text">집중이 잘 붙는 날이야. 오래 붙잡기보다 짧은 세션으로 나누면 성적 운이 더 예쁘게 따라올 거야.</p>
-            </section>
-          </div>
-
-          <div class="lucky-row">
-            <div class="lucky-box">
-              <p class="lucky-label">🍀 LUCKY COLOR</p>
-              <p class="lucky-value">
-                <span id="card-color-chip" class="color-chip" aria-hidden="true"></span>
-                <span id="card-color">BABY BLUE</span>
-              </p>
-            </div>
-            <div class="lucky-box">
-              <p class="lucky-label">🎀 LUCKY ITEM</p>
-              <p id="card-item" class="lucky-value">립밤</p>
-            </div>
-          </div>
 
           <p class="watermark">today-zodiac</p>
         </article>
+
+        <button id="compat-open-btn" type="button" class="compat-gate">
+          <span class="compat-gate-en">just us, tonight</span>
+          <span class="compat-gate-title">너와의 궁합</span>
+          <span class="compat-gate-sub">그 애 생일 넣으면, 우리 사이가 보여.</span>
+        </button>
 
         <div class="actions">
           <button id="save-btn" type="button" class="btn btn-primary">📸 결과 저장하기</button>
           <button id="share-btn" type="button" class="btn btn-ghost">💌 친구에게 보내기</button>
           <button id="retry-btn" type="button" class="text-link">다른 생일로 보기</button>
+        </div>
+        <p class="disclaimer">재미로 가볍게 즐겨주세요 ✨</p>
+      </section>
+
+      <section id="compat-home" class="screen hidden">
+        <button id="compat-back-btn" type="button" class="back-btn">← 오늘의 운세로</button>
+        <p class="brand">💗 너와의 궁합</p>
+        <h1 class="headline compat-headline">나와 너,<br />오늘 밤의 궁합</h1>
+        <p class="subhead">둘의 생일만 넣으면 타로가 우리 사이를 읽어줄게.</p>
+
+        <form id="compat-form" class="birthday-form" novalidate>
+          <p class="date-label">나의 생년월일</p>
+          <div class="date-row">
+            <input id="me-year" inputmode="numeric" maxlength="4" placeholder="YYYY" required />
+            <input id="me-month" inputmode="numeric" maxlength="2" placeholder="MM" required />
+            <input id="me-day" inputmode="numeric" maxlength="2" placeholder="DD" required />
+          </div>
+
+          <p class="date-label date-label-gap">너의 생년월일</p>
+          <div class="date-row">
+            <input id="you-year" inputmode="numeric" maxlength="4" placeholder="YYYY" required />
+            <input id="you-month" inputmode="numeric" maxlength="2" placeholder="MM" required />
+            <input id="you-day" inputmode="numeric" maxlength="2" placeholder="DD" required />
+          </div>
+
+          <p id="compat-error" class="form-error" hidden></p>
+          <button type="submit" class="btn btn-primary">우리 궁합 보기 💗</button>
+        </form>
+      </section>
+
+      <section id="compat-result" class="screen hidden">
+        <button id="compat-result-back-btn" type="button" class="back-btn">← 뒤로가기</button>
+        <article id="compat-card" class="card compat-card" aria-live="polite">
+          <p class="block-kicker">YOUR CHEMISTRY</p>
+          <h2 class="block-title">너와의 궁합</h2>
+
+          <section class="fortune-detail">
+            <div class="detail-heading">
+              <span>나 × 너</span>
+            </div>
+            <p id="compat-pair" class="compat-pair">천칭자리 × 사자자리</p>
+          </section>
+
+          <section class="temperature">
+            <div>
+              <p class="temperature-label">💗 궁합온도</p>
+              <p id="compat-verdict" class="profile-label">궁합 꽤 달아</p>
+            </div>
+            <strong id="compat-score" class="temperature-score">87°</strong>
+            <div class="temperature-track" aria-hidden="true">
+              <span id="compat-fill"></span>
+            </div>
+          </section>
+
+          <div class="tarot-frame">
+            <img id="tarot-art" class="tarot-art" alt="" />
+          </div>
+
+          <div class="fortune-details tarot-reading">
+            <section class="fortune-detail">
+              <div class="detail-heading"><span>1. 우리 사이</span></div>
+              <p id="tarot-line-1"></p>
+            </section>
+            <section class="fortune-detail">
+              <div class="detail-heading"><span>2. 오늘의 기류</span></div>
+              <p id="tarot-line-2"></p>
+            </section>
+            <section class="fortune-detail">
+              <div class="detail-heading"><span>3. 헤어질 운</span></div>
+              <p id="tarot-line-3"></p>
+            </section>
+          </div>
+          <p class="watermark">today-zodiac</p>
+        </article>
+
+        <div class="actions">
+          <button id="compat-save-btn" type="button" class="btn btn-primary">📸 궁합 저장하기</button>
+          <button id="compat-share-btn" type="button" class="btn btn-ghost">💌 친구에게 보내기</button>
+          <button id="compat-again-btn" type="button" class="text-link">다른 사람과 다시 보기</button>
         </div>
         <p class="disclaimer">재미로 가볍게 즐겨주세요 ✨</p>
       </section>
