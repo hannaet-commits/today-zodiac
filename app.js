@@ -347,6 +347,16 @@ bindDateInputs(["year", "month", "day"]);
 bindDateInputs(["me-year", "me-month", "me-day"]);
 bindDateInputs(["you-year", "you-month", "you-day"]);
 
+(function hideApkLinkInApp() {
+  const apkLink = document.getElementById("apk-download");
+  if (!apkLink) {
+    return;
+  }
+  if (/iPad|iPhone|iPod|TodayZodiacApp/i.test(navigator.userAgent)) {
+    apkLink.hidden = true;
+  }
+})();
+
 fetch("./data/fortune.json")
   .then((response) => response.json())
   .then((data) => {

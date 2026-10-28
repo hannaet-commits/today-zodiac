@@ -250,6 +250,20 @@ input {
   font-size: 13px;
 }
 
+.apk-link {
+  display: block;
+  margin: 8px auto 0;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.apk-link[hidden] {
+  display: none;
+}
+
 .card {
   position: relative;
   overflow: hidden;
